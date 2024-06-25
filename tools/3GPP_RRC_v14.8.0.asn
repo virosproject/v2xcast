@@ -1,0 +1,253 @@
+-- FILE: @(#)rrc.asn  17.4  18/10/08
+
+-- 3GPP TS 36.331 V14.8.0 (2018-09)
+
+
+EUTRA-RRC-Definitions DEFINITIONS AUTOMATIC TAGS ::=
+
+BEGIN
+
+P-Max                               ::= INTEGER (-30..33)
+SL-CBR-r14                          ::= INTEGER (0..100)
+AdditionalSpectrumEmission          ::= INTEGER (1..32)
+AdditionalSpectrumEmission-v10l0    ::= INTEGER (33..288)
+ARFCN-ValueEUTRA-r9                 ::= INTEGER (0..maxEARFCN2)
+RSRP-RangeSL3-r12                   ::= INTEGER (0..11)
+SL-OffsetIndicatorSync-r14          ::= INTEGER (0..159)
+SL-Priority-r13                     ::= INTEGER (1..8)
+SL-ThresPSSCH-RSRP-r14              ::= INTEGER (0..66)
+P0-SL-r12                           ::= INTEGER (-126..31)
+Tx-PreconfigIndex-r14               ::= INTEGER (0..maxSL-V2X-TxConfig2-1-r14)
+
+maxCBR-Level-r14            INTEGER ::= 16      -- Maximum number of CBR levels
+maxCBR-Level-1-r14          INTEGER ::= 15
+maxEARFCN2                  INTEGER ::= 262143  -- Highest value extended EARFCN range
+maxFreqV2X-r14              INTEGER ::= 8       -- Maximum number of carrier frequencies for which V2X
+                                                -- sidelink communication can be configured
+maxPSSCH-TxConfig-r14       INTEGER ::= 16      -- Maximum number of PSSCH TX configurations
+maxReservationPeriod-r14    INTEGER ::= 16      -- Maximum number of resource reservation periodicities
+                                                -- for sidelink V2X communication
+maxSL-V2X-RxPoolPreconf-r14 INTEGER ::= 16      -- Maximum number of RX resource pools for
+                                                -- V2X sidelink communication
+maxSL-V2X-TxPoolPreconf-r14 INTEGER ::= 8       -- Maximum number of TX resource pools for
+                                                -- V2X sidelink communication
+maxSL-V2X-CBRConfig2-r14    INTEGER ::= 8       -- Maximum number of CBR range configurations in
+                                                -- pre-configuration for V2X sidelink
+                                                -- communication congestion control
+maxSL-V2X-CBRConfig2-1-r14  INTEGER ::= 7
+maxSL-V2X-TxConfig2-r14     INTEGER ::= 128     -- Maximum number of TX parameter
+                                                -- configurations in pre-configuration for V2X
+                                                -- sidelink communication congestion control
+maxSL-V2X-TxConfig2-1-r14   INTEGER ::= 127
+
+SL-PSSCH-TxConfigList-r14                     ::= SEQUENCE (SIZE (1..maxPSSCH-TxConfig-r14)) OF SL-PSSCH-TxConfig-r14
+SL-RestrictResourceReservationPeriodList-r14  ::= SEQUENCE (SIZE (1..maxReservationPeriod-r14)) OF SL-RestrictResourceReservationPeriod-r14
+SL-ThresPSSCH-RSRP-List-r14                   ::= SEQUENCE (SIZE (64)) OF SL-ThresPSSCH-RSRP-r14
+SL-CBR-Levels-Config-r14                      ::= SEQUENCE (SIZE (1..maxCBR-Level-r14)) OF SL-CBR-r14
+
+TDD-ConfigSL-r12 ::= SEQUENCE {
+  subframeAssignmentSL-r12  ENUMERATED {none, sa0, sa1, sa2, sa3, sa4, sa5, sa6}
+}
+
+SL-RestrictResourceReservationPeriod-r14  ::= ENUMERATED {v0dot2, v0dot5, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, spare4,spare3, spare2, spare1}
+SL-TypeTxSync-r14                         ::= ENUMERATED {gnss, enb, ue}
+FilterCoefficient                         ::= ENUMERATED { fc0, fc1, fc2, fc3, fc4, fc5, fc6, fc7, fc8, fc9, fc11, fc13, fc15, fc17, fc19, spare1, ...}
+
+SL-OffsetIndicator-r12 ::= CHOICE {
+  small-r12 INTEGER (0..319),
+  large-r12 INTEGER (0..10239)
+}
+SubframeBitmapSL-r14 ::= CHOICE {
+  bs10-r14    BIT STRING (SIZE (10)),
+  bs16-r14    BIT STRING (SIZE (16)),
+  bs20-r14    BIT STRING (SIZE (20)),
+  bs30-r14    BIT STRING (SIZE (30)),
+  bs40-r14    BIT STRING (SIZE (40)),
+  bs50-r14    BIT STRING (SIZE (50)),
+  bs60-r14    BIT STRING (SIZE (60)),
+  bs100-r14   BIT STRING (SIZE (100))
+}
+SL-TxPower-r14 ::= CHOICE {
+  minusinfinity-r14 NULL,
+  txPower-r14     INTEGER (-41..31)
+}
+
+
+-- ATLK: Level-0
+SL-V2X-Preconfiguration-r14 ::= SEQUENCE {
+  v2x-PreconfigFreqList-r14   SL-V2X-PreconfigFreqList-r14,
+  anchorCarrierFreqList-r14   SL-AnchorCarrierFreqList-V2X-r14        OPTIONAL,
+  cbr-PreconfigList-r14       SL-CBR-PreconfigTxConfigList-r14        OPTIONAL,
+  ...
+}
+
+-- ATLK: Level-1
+SL-CBR-PreconfigTxConfigList-r14 ::= SEQUENCE {
+  cbr-RangeCommonConfigList-r14 SEQUENCE (SIZE (1..maxSL-V2X-CBRConfig2-r14)) OF SL-CBR-Levels-Config-r14,
+  sl-CBR-PSSCH-TxConfigList-r14 SEQUENCE (SIZE (1..maxSL-V2X-TxConfig2-r14)) OF SL-CBR-PSSCH-TxConfig-r14
+}
+
+-- ATLK: Level-1
+SL-V2X-PreconfigFreqList-r14 ::= SEQUENCE (SIZE (1..maxFreqV2X-r14)) OF SL-V2X-PreconfigFreqInfo-r14
+
+-- ATLK: Level-1
+SL-V2X-PreconfigFreqInfo-r14 ::= SEQUENCE {
+  v2x-CommPreconfigGeneral-r14      SL-PreconfigGeneral-r12,
+  v2x-CommPreconfigSync-r14         SL-PreconfigV2X-Sync-r14          OPTIONAL,
+  v2x-CommRxPoolList-r14            SL-PreconfigV2X-RxPoolList-r14,
+  v2x-CommTxPoolList-r14            SL-PreconfigV2X-TxPoolList-r14,
+  p2x-CommTxPoolList-r14            SL-PreconfigV2X-TxPoolList-r14,
+  v2x-ResourceSelectionConfig-r14   SL-CommTxPoolSensingConfig-r14    OPTIONAL,
+  zoneConfig-r14                    SL-ZoneConfig-r14                 OPTIONAL,
+  syncPriority-r14                  ENUMERATED {gnss, enb},
+  thresSL-TxPrioritization-r14      SL-Priority-r13                   OPTIONAL,
+  offsetDFN-r14                     INTEGER (0..1000)                 OPTIONAL,
+  ...
+}
+
+-- ATLK: Level-1
+SL-AnchorCarrierFreqList-V2X-r14 ::= SEQUENCE (SIZE (1..maxFreqV2X-r14)) OF ARFCN-ValueEUTRA-r9
+
+-- ATLK: Level-2
+SL-CBR-PSSCH-TxConfig-r14 ::= SEQUENCE {
+  cr-Limit-r14        INTEGER(0..10000),
+  tx-Parameters-r14   SL-PSSCH-TxParameters-r14
+}
+
+-- ATLK: Level-2
+SL-CommTxPoolSensingConfig-r14 ::= SEQUENCE {
+  pssch-TxConfigList-r14                  SL-PSSCH-TxConfigList-r14,
+  thresPSSCH-RSRP-List-r14                SL-ThresPSSCH-RSRP-List-r14,
+  restrictResourceReservationPeriod-r14   SL-RestrictResourceReservationPeriodList-r14  OPTIONAL, -- Need OR
+  probResourceKeep-r14                    ENUMERATED {v0, v0dot2, v0dot4, v0dot6, v0dot8, spare3,spare2, spare1},
+  p2x-SensingConfig-r14                   SEQUENCE {
+    minNumCandidateSF-r14                 INTEGER (1..13),
+    gapCandidateSensing-r14               BIT STRING (SIZE (10))
+  }   OPTIONAL, -- Need OR
+  sl-ReselectAfter-r14                    ENUMERATED {n1, n2, n3, n4, n5, n6, n7, n8, n9,
+                                                      spare7, spare6, spare5, spare4, spare3, spare2,
+                                                      spare1}       OPTIONAL    -- Need OR
+}
+
+-- ATLK: Level-2
+SL-ZoneConfig-r14 ::= SEQUENCE {
+  zoneLength-r14      ENUMERATED {m5, m10, m20, m50, m100, m200, m500, spare1},
+  zoneWidth-r14       ENUMERATED {m5, m10, m20, m50, m100, m200, m500, spare1},
+  zoneIdLongiMod-r14  INTEGER (1..4),
+  zoneIdLatiMod-r14   INTEGER (1..4)
+}
+
+-- ATLK: Level-2
+SL-PreconfigGeneral-r12 ::= SEQUENCE {
+  -- PDCP configuration
+  rohc-Profiles-r12         SEQUENCE {
+    profile0x0001-r12         BOOLEAN,
+    profile0x0002-r12         BOOLEAN,
+    profile0x0004-r12         BOOLEAN,
+    profile0x0006-r12         BOOLEAN,
+    profile0x0101-r12         BOOLEAN,
+    profile0x0102-r12         BOOLEAN,
+    profile0x0104-r12         BOOLEAN
+  },
+  -- Physical configuration
+  carrierFreq-r12                   ARFCN-ValueEUTRA-r9,
+  maxTxPower-r12                    P-Max,
+  additionalSpectrumEmission-r12    AdditionalSpectrumEmission,
+  sl-bandwidth-r12                  ENUMERATED {n6, n15, n25, n50, n75, n100},
+  tdd-ConfigSL-r12                  TDD-ConfigSL-r12,
+  reserved-r12                      BIT STRING (SIZE (19)),
+  ...,
+  additionalSpectrumEmission-v1440  AdditionalSpectrumEmission-v10l0    OPTIONAL
+}
+
+-- ATLK: Level-2. V2X Rx Pool
+SL-PreconfigV2X-RxPoolList-r14 ::= SEQUENCE (SIZE (1..maxSL-V2X-RxPoolPreconf-r14)) OF SL-V2X-PreconfigCommPool-r14
+
+-- ATLK: Level-2. V2X Tx Pool
+SL-PreconfigV2X-TxPoolList-r14 ::= SEQUENCE (SIZE (1..maxSL-V2X-TxPoolPreconf-r14)) OF SL-V2X-PreconfigCommPool-r14
+
+-- ATLK: Level-2. Common Pool
+SL-V2X-PreconfigCommPool-r14 ::= SEQUENCE {
+-- This IE is same as SL-CommResourcePoolV2X with rxParametersNCell absent
+  sl-OffsetIndicator-r14                SL-OffsetIndicator-r12    OPTIONAL,
+  sl-Subframe-r14                       SubframeBitmapSL-r14,
+  adjacencyPSCCH-PSSCH-r14              BOOLEAN,
+  sizeSubchannel-r14                    ENUMERATED {n4, n5, n6, n8, n9, n10, n12, n15, n16, n18, n20, n25, n30,
+                                                    n48, n50, n72, n75, n96, n100, spare13, spare12, spare11,
+                                                    spare10, spare9, spare8, spare7, spare6, spare5, spare4,
+                                                    spare3, spare2, spare1},
+  numSubchannel-r14                     ENUMERATED {n1, n3, n5, n8, n10, n15, n20, spare1},
+  startRB-Subchannel-r14                INTEGER (0..99),
+  startRB-PSCCH-Pool-r14                INTEGER (0..99)                     OPTIONAL,
+  dataTxParameters-r14                  P0-SL-r12,
+  zoneID-r14                            INTEGER (0..7)                      OPTIONAL,
+  threshS-RSSI-CBR-r14                  INTEGER (0..45)                     OPTIONAL,
+  cbr-pssch-TxConfigList-r14            SL-CBR-PPPP-TxPreconfigList-r14     OPTIONAL,
+  resourceSelectionConfigP2X-r14        SL-P2X-ResourceSelectionConfig-r14  OPTIONAL,
+  syncAllowed-r14                       SL-SyncAllowed-r14                  OPTIONAL,
+  restrictResourceReservationPeriod-r14 SL-RestrictResourceReservationPeriodList-r14  OPTIONAL, -- Need OR
+  ...
+}
+
+-- ATLK: Level-2
+SL-PreconfigV2X-Sync-r14 ::= SEQUENCE {
+  syncOffsetIndicators-r14  SL-V2X-SyncOffsetIndicators-r14,
+  syncTxParameters-r14      P0-SL-r12,
+  syncTxThreshOoC-r14       RSRP-RangeSL3-r12,
+  filterCoefficient-r14     FilterCoefficient,
+  syncRefMinHyst-r14        ENUMERATED {dB0, dB3, dB6, dB9, dB12},
+  syncRefDiffHyst-r14       ENUMERATED {dB0, dB3, dB6, dB9, dB12, dBinf},
+  ...
+}
+
+-- ATLK: Level-3
+SL-V2X-SyncOffsetIndicators-r14 ::= SEQUENCE {
+  syncOffsetIndicator1-r14  SL-OffsetIndicatorSync-r14,
+  syncOffsetIndicator2-r14  SL-OffsetIndicatorSync-r14,
+  syncOffsetIndicator3-r14  SL-OffsetIndicatorSync-r14      OPTIONAL
+}
+
+-- ATLK: Level-3
+SL-CBR-PPPP-TxPreconfigList-r14 ::= SEQUENCE (SIZE (1..8)) OF SL-PPPP-TxPreconfigIndex-r14
+
+-- ATLK: Level-3
+SL-PPPP-TxPreconfigIndex-r14 ::= SEQUENCE {
+  priorityThreshold-r14       SL-Priority-r13,
+  defaultTxConfigIndex-r14    INTEGER(0..maxCBR-Level-1-r14),
+  cbr-ConfigIndex-r14         INTEGER(0..maxSL-V2X-CBRConfig2-1-r14),
+  tx-ConfigIndexList-r14      SEQUENCE (SIZE (1..maxCBR-Level-r14)) OF Tx-PreconfigIndex-r14
+}
+
+-- ATLK: Level-3
+SL-P2X-ResourceSelectionConfig-r14 ::= SEQUENCE {
+  partialSensing-r14    ENUMERATED {true} OPTIONAL, -- Need OR
+  randomSelection-r14   ENUMERATED {true} OPTIONAL  -- Need OR
+}
+
+-- ATLK: Level-3
+SL-PSSCH-TxConfig-r14 ::= SEQUENCE {
+  typeTxSync-r14            SL-TypeTxSync-r14   OPTIONAL, -- Need OR
+  thresUE-Speed-r14         ENUMERATED {kmph60, kmph80, kmph100, kmph120, kmph140, kmph160, kmph180, kmph200},
+  parametersAboveThres-r14  SL-PSSCH-TxParameters-r14,
+  parametersBelowThres-r14  SL-PSSCH-TxParameters-r14,
+  ...
+}
+
+-- ATLK: Level-3 & Level-4
+SL-PSSCH-TxParameters-r14 ::= SEQUENCE {
+  minMCS-PSSCH-r14                INTEGER (0..31),
+  maxMCS-PSSCH-r14                INTEGER (0..31),
+  minSubChannel-NumberPSSCH-r14   INTEGER (1..20),
+  maxSubchannel-NumberPSSCH-r14   INTEGER (1..20),
+  allowedRetxNumberPSSCH-r14      ENUMERATED {n0, n1, both, spare1},
+  maxTxPower-r14                  SL-TxPower-r14        OPTIONAL      -- Cond CBR
+}
+
+-- ATLK: Level-3
+SL-SyncAllowed-r14 ::= SEQUENCE {
+  gnss-Sync-r14 ENUMERATED {true} OPTIONAL, -- Need OR
+  enb-Sync-r14  ENUMERATED {true} OPTIONAL, -- Need OR
+  ue-Sync-r14   ENUMERATED {true} OPTIONAL  -- Need OR
+}
+
+END
