@@ -1,0 +1,60 @@
+{
+  "Caster Profile": [
+    {
+      "ID": 0,
+      "Description": "SPATEM example",
+      "Caster Comm. Mode": "V2Xcast API",
+      "BTP":
+        {
+          "BTP Type": "B",
+          "Source Port": 2004,
+          "Destination Port": 2004,
+          "TX Power":20,
+          "TX Data Rate":12
+        },
+      "GN":
+        {
+          "Transport Type": "SHB",
+          "TX Traffic Class ID": 2,
+          "TX Maximum Packet Lifetime": 1,
+          "TX Repetition Interval": 0,
+          "TX Maximum Repetition Time": 0
+        },
+      "Security":
+        {
+          "AID": 137
+        }
+    },
+    {
+      "ID": 1,
+      "Description": "MAPEM example",
+      "Caster Comm. Mode": "V2Xcast API",
+      "BTP":
+        {
+          "BTP Type": "B",
+          "Source Port": 2003,
+          "Destination Port": 2003,
+          "TX Power":20,
+          "TX Data Rate":12
+        },
+      "GN":
+        {
+          "Transport Type": "SHB",
+          "TX Traffic Class ID": 2,
+          "TX Maximum Packet Lifetime": 1,
+          "TX Repetition Interval": 0,
+          "TX Maximum Repetition Time": 0
+        },
+      "Security":
+        {
+          "AID": 138
+        }
+    }
+  ],
+  "POTI Profile": [
+    {
+      "Description": "Internal POTI",
+      "Type": "Publisher"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "Caster Profile": [  
+    {
+      "ID": 0,
+      "Description": "CAM example, no security",
+      "Caster Comm. Mode": "V2Xcast API",
+      "BTP":
+        {
+          "BTP Type": "B",
+          "Source Port": 2001,
+          "Destination Port": 2001,
+          "TX Power":20,
+          "TX Data Rate":12
+        },
+      "GN":
+        {
+          "Transport Type": "SHB",
+          "TX Traffic Class ID": 2,
+          "TX Maximum Packet Lifetime": 1,
+          "TX Repetition Interval": 0,
+          "TX Maximum Repetition Time": 0
+        },
+      "Security":
+        {
+          "AID": -1
+        }
+    }, 
+    {
+      "ID": 1,
+      "Description": "DENM example",
+      "Caster Comm. Mode": "V2Xcast API",
+      "BTP":
+        {
+          "BTP Type": "B",
+          "Source Port": 2002,
+          "Destination Port": 2002,
+          "TX Power": 20,
+          "TX Data Rate":12
+        },
+      "GN":
+        {
+          "Transport Type": "GBC",
+          "TX Traffic Class ID": 1,
+          "TX Maximum Packet Lifetime": 1,
+          "TX Repetition Interval": 0,
+          "TX Maximum Repetition Time": 0,
+          "TX Maximum Hop Limit": 1,
+          "Target Shape": "Circular",
+          "Distance A": 1000,
+          "Distance B": 1000,
+          "Angle": 0
+        },
+      "Security": 
+        {
+          "AID": -1
+        }
+    }
+  ],
+  "POTI Profile": [
+    {
+      "Description": "Internal POTI",
+      "Type": "Publisher"
+    }
+  ]
+}
